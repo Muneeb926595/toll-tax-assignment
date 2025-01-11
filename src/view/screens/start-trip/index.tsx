@@ -11,9 +11,7 @@ import { CommonBottomSheetStyle } from '../../components/bottom-sheet-wrapper/st
 import { Colors, Constants, ENTRY_POINTS, Images, Layout } from '../../../globals';
 
 export const StartTripScreen = (props) => {
-    const [entryDate, setEntryDate] = useState('');
-    const [exitDate, setExitDate] = useState('');
-    const [selectedDates, setSelectedDates] = useState(undefined)
+    const [selectedDate, setSelectedDate] = useState(undefined)
 
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(ENTRY_POINTS?.[0]?.value);
@@ -25,34 +23,10 @@ export const StartTripScreen = (props) => {
         }
     });
 
-    // const handleSubmit = async () => {
-    //     const totalCost = calculateToll();
-
-    //     if (!totalCost) return;
-
-    //     const data = {
-    //         EntryDateTime: entryDate,
-    //         NumberPlate: numberPlate,
-    //         EntryInterchange: ENTRY_POINTS.find(point => point.value === entryPoint)?.label,
-    //         TripStatus: 'Completed',
-    //         ExitDateTime: exitDate,
-    //         ExitInterchange: ENTRY_POINTS.find(point => point.value === exitPoint)?.label,
-    //         TotalCostTrip: totalCost,
-    //     };
-
-    //     try {
-    //         await axios.post('https://crudcrud.com/api/0de6f86092554f1a984f644dc24fb0f5/trips', data);
-    //         Alert.alert('Success', 'Trip data submitted successfully.');
-    //     } catch (error) {
-    //         Alert.alert('Error', 'Failed to submit trip data.');
-    //         console.error(error);
-    //     }
-    // };
-
     const handleOpenCalender = async () => {
         await magicSheet.show(() => <DatePickerBottomSheet
             setSelectedDates={(values) => {
-                setSelectedDates(values);
+                setSelectedDate(values);
                 magicSheet?.hide()
             }}
             headerTitle={"Select Date"}
@@ -60,7 +34,12 @@ export const StartTripScreen = (props) => {
     }
 
     const handleSubmitTrip = (data) => {
-        props.navigation.navigate('EndTripScreen', { tripStatupPointData: data })
+        const payload = {
+            numberPlate: data?.numberPlate,
+            entryDateTime: selectedDate,
+            entryInterchange: value,
+        }
+        props.navigation.navigate('EndTripScreen', { tripStatupPointData: payload })
     }
     return (
         <Container hasScroll insetsToHandle={['top', 'right', 'left']} screenBackgroundStyle={{ backgroundColor: Colors.background, }} containerStyles={{ backgroundColor: Colors.white, paddingHorizontal: 0 }} >
@@ -111,8 +90,8 @@ export const StartTripScreen = (props) => {
                     </AppText>}
 
                     <TouchableOpacity style={[styles.datePickerContainer]} onPress={handleOpenCalender}>
-                        <AppText style={{ color: selectedDates ? Colors.surface['DEFAULT'] : Colors.typography['100'], fontSize: Layout.RFValue(Platform.select({ ios: 13.4, android: 16 })) }}>
-                            {dayjs(selectedDates).format(Constants.DATE_AND_TIME_FORMATE) ?? "Date Time"}
+                        <AppText style={{ color: selectedDate ? Colors.surface['DEFAULT'] : Colors.typography['100'], fontSize: Layout.RFValue(Platform.select({ ios: 13.4, android: 16 })) }}>
+                            {dayjs(selectedDate).format(Constants.DATE_AND_TIME_FORMATE) ?? "Date Time"}
                         </AppText>
                     </TouchableOpacity>
 

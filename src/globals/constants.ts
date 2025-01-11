@@ -39,7 +39,7 @@ class _Constants {
     even: ['Mon', 'Wed'],
     odd: ['Tue', 'Thu'],
   };
-  readonly HOLIDAY_DATES = ['03-23', '08-14', '12-25']; // MM-DD format
+  readonly HOLIDAY_DATES = ['2025-03-23', '2025-08-14', '2025-12-25']; // MM-DD format
 }
 
 export const Constants = new _Constants();

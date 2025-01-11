@@ -12,7 +12,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { EndTripScreen, StartTripScreen } from './view/screens';
+import { EndTripScreen, StartTripScreen, TripSummaryScreen } from './view/screens';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { MagicSheetPortal } from 'react-native-magic-sheet';
@@ -23,6 +23,7 @@ dayjs.extend(timezone);
 export type MainStackParamList = {
   StartTripScreen: undefined;
   EndTripScreen: { tripStatupPointData: any };
+  TripSummaryScreen: { summary: any };
 };
 
 const MainAppStack = createNativeStackNavigator<MainStackParamList>();
@@ -39,6 +40,7 @@ function App(): React.JSX.Element {
           <MainAppStack.Navigator >
             <MainAppStack.Screen name="StartTripScreen" component={StartTripScreen} options={{ headerShown: false }} />
             <MainAppStack.Screen name="EndTripScreen" component={EndTripScreen} options={{ headerShown: false }} />
+            <MainAppStack.Screen name="TripSummaryScreen" component={TripSummaryScreen} options={{ headerShown: false }} />
           </MainAppStack.Navigator>
         </NavigationContainer>
       </BottomSheetModalProvider>

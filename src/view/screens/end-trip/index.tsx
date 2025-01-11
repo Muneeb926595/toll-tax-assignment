@@ -9,13 +9,12 @@ import { styles } from './styles'
 import { AppText, AuthInput, Button, Container, DatePickerBottomSheet } from '../../components';
 import { CommonBottomSheetStyle } from '../../components/bottom-sheet-wrapper/styles';
 import { Colors, Constants, ENTRY_POINTS, Images, Layout } from '../../../globals';
+import { calculateToll } from './metods';
 
 export const EndTripScreen = (props) => {
-    const [loading, setLoadgin] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const [entryDate, setEntryDate] = useState('');
-    const [exitDate, setExitDate] = useState('');
-    const [selectedDates, setSelectedDates] = useState(undefined)
+    const [selectedDate, setSelectedDate] = useState(undefined)
 
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(ENTRY_POINTS?.[0]?.value);
@@ -23,10 +22,10 @@ export const EndTripScreen = (props) => {
 
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
-            numberPlate: '',
+            numberPlate: props?.route?.params?.tripStatupPointData?.numberPlate,
         }
     });
-    console.log("props", props?.route?.params)
+
     // const handleSubmit = async () => {
     //     const totalCost = calculateToll();
 
@@ -54,7 +53,7 @@ export const EndTripScreen = (props) => {
     const handleOpenCalender = async () => {
         await magicSheet.show(() => <DatePickerBottomSheet
             setSelectedDates={(values) => {
-                setSelectedDates(values);
+                setSelectedDate(values);
                 magicSheet?.hide()
             }}
             headerTitle={"Select Date"}
@@ -62,8 +61,16 @@ export const EndTripScreen = (props) => {
     }
 
     const handleCalculate = (data) => {
-        console.log("data", data)
+        const tripStartData = props?.route?.params?.tripStatupPointData
+        const tripEndData = {
+            ...data,
+            entryDateTime: selectedDate,
+            entryInterchange: value,
+        }
 
+        const totalToll = calculateToll(tripStartData, tripEndData);
+
+        console.log("totalToll", totalToll)
     }
     return (
         <Container hasScroll insetsToHandle={['top', 'right', 'left']} screenBackgroundStyle={{ backgroundColor: Colors.background, }} containerStyles={{ backgroundColor: Colors.white, paddingHorizontal: 0 }} >
@@ -104,6 +111,7 @@ export const EndTripScreen = (props) => {
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 placeholder={"Number Plate (LLL-NNN)"}
+                                // @ts-ignore
                                 isError={errors?.numberPlate}
                             />
                         )}
@@ -114,8 +122,8 @@ export const EndTripScreen = (props) => {
                     </AppText>}
 
                     <TouchableOpacity style={[styles.datePickerContainer]} onPress={handleOpenCalender}>
-                        <AppText style={{ color: selectedDates ? Colors.surface['DEFAULT'] : Colors.typography['100'], fontSize: Layout.RFValue(Platform.select({ ios: 13.4, android: 16 })) }}>
-                            {dayjs(selectedDates).format(Constants.DATE_AND_TIME_FORMATE) ?? "Date Time"}
+                        <AppText style={{ color: selectedDate ? Colors.surface['DEFAULT'] : Colors.typography['100'], fontSize: Layout.RFValue(Platform.select({ ios: 13.4, android: 16 })) }}>
+                            {dayjs(selectedDate).format(Constants.DATE_AND_TIME_FORMATE) ?? "Date Time"}
                         </AppText>
                     </TouchableOpacity>
 
