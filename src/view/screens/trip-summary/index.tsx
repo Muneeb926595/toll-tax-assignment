@@ -1,37 +1,12 @@
-import React, { useState } from 'react'
-import { magicSheet } from 'react-native-magic-sheet';
+import React from 'react'
 import { View, Image } from 'react-native'
 
 import { styles } from './styles'
-import { AppText, AuthInput, Button, Container, DatePickerBottomSheet } from '../../components';
-import { CommonBottomSheetStyle } from '../../components/bottom-sheet-wrapper/styles';
-import { Colors, Constants, ENTRY_POINTS, Images, Layout } from '../../../globals';
+import { AppText, Button, Container, } from '../../components';
+import { Colors, Images, Layout } from '../../../globals';
 
 export const TripSummaryScreen = (props) => {
-    console.log("props", props?.route?.params)
-    // const handleSubmit = async () => {
-    //     const totalCost = calculateToll();
-
-    //     if (!totalCost) return;
-
-    //     const data = {
-    //         EntryDateTime: entryDate,
-    //         NumberPlate: numberPlate,
-    //         EntryInterchange: ENTRY_POINTS.find(point => point.value === entryPoint)?.label,
-    //         TripStatus: 'Completed',
-    //         ExitDateTime: exitDate,
-    //         ExitInterchange: ENTRY_POINTS.find(point => point.value === exitPoint)?.label,
-    //         TotalCostTrip: totalCost,
-    //     };
-
-    //     try {
-    //         await axios.post('https://crudcrud.com/api/0de6f86092554f1a984f644dc24fb0f5/trips', data);
-    //         Alert.alert('Success', 'Trip data submitted successfully.');
-    //     } catch (error) {
-    //         Alert.alert('Error', 'Failed to submit trip data.');
-    //         console.error(error);
-    //     }
-    // };
+    const { baseRate, discount, distanceCost, subTotal, totalCost } = props?.route?.params?.summary;
 
     return (
         <Container hasScroll insetsToHandle={['top', 'right', 'left']} screenBackgroundStyle={{ backgroundColor: Colors.background, }} containerStyles={{ backgroundColor: Colors.white, paddingHorizontal: 0 }} >
@@ -42,6 +17,29 @@ export const TripSummaryScreen = (props) => {
                         resizeMode='cover'
                         style={styles.logo}
                     />
+
+
+                    <AppText style={styles.title}>Toll Report</AppText>
+                    <View style={styles.row}>
+                        <AppText style={styles.label}>Base Rate:</AppText>
+                        <AppText style={styles.value}>{baseRate}</AppText>
+                    </View>
+                    <View style={styles.row}>
+                        <AppText style={styles.label}>Distance Cost:</AppText>
+                        <AppText style={styles.value}>{distanceCost}</AppText>
+                    </View>
+                    <View style={styles.row}>
+                        <AppText style={styles.label}>Sub Total:</AppText>
+                        <AppText style={styles.value}>{subTotal}</AppText>
+                    </View>
+                    <View style={styles.row}>
+                        <AppText style={styles.label}>Discount:</AppText>
+                        <AppText style={styles.value}>- {discount}</AppText>
+                    </View>
+                    <View style={[styles.row, styles.totalRow]}>
+                        <AppText style={styles.label}>Total Cost:</AppText>
+                        <AppText style={styles.totalValue}>{totalCost}</AppText>
+                    </View>
 
                     <Button
                         buttonLable={"Start New Trip"}

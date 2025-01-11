@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { magicSheet } from 'react-native-magic-sheet';
 import DropDownPicker from 'react-native-dropdown-picker'
-import { TouchableOpacity, Platform, View, Image } from 'react-native'
+import { TouchableOpacity, Platform, View, Image, Alert } from 'react-native'
 import { Controller, useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
 
@@ -10,6 +10,7 @@ import { AppText, AuthInput, Button, Container, DatePickerBottomSheet } from '..
 import { CommonBottomSheetStyle } from '../../components/bottom-sheet-wrapper/styles';
 import { Colors, Constants, ENTRY_POINTS, Images, Layout } from '../../../globals';
 import { calculateToll } from './methods';
+import axios from 'axios';
 
 export const EndTripScreen = (props) => {
     const [loading, setLoading] = useState(false);
@@ -36,7 +37,13 @@ export const EndTripScreen = (props) => {
         />, { ...CommonBottomSheetStyle, snapPoints: [Layout.heightPercentageToDP(56)] })
     }
 
-    const handleCalculate = (data) => {
+    const handleCalculate = async (data) => {
+        // Validations
+        if (value === 0) {
+            return Alert.alert("Zero point cannot be used as Interchange in End trip")
+        }
+
+        // Formate data
         const tripStartData = props?.route?.params?.tripStatupPointData
         const tripEndData = {
             ...data,
@@ -44,28 +51,32 @@ export const EndTripScreen = (props) => {
             exitInterchange: value,
         }
 
+        // Caluculate toll
         const totalToll = calculateToll(tripStartData, tripEndData);
 
-        console.log("totalToll", totalToll)
-        //     if (!totalCost) return;
+        if (!totalToll) return;
 
-        //     const data = {
-        //         EntryDateTime: entryDate,
-        //         NumberPlate: numberPlate,
-        //         EntryInterchange: ENTRY_POINTS.find(point => point.value === entryPoint)?.label,
-        //         TripStatus: 'Completed',
-        //         ExitDateTime: exitDate,
-        //         ExitInterchange: ENTRY_POINTS.find(point => point.value === exitPoint)?.label,
-        //         TotalCostTrip: totalCost,
-        //     };
+        // Api call for toll
+        const payload = {
+            EntryDateTime: props?.route?.params?.tripStatupPointData?.entryDateTime,
+            NumberPlate: props?.route?.params?.tripStatupPointData?.numberPlate,
+            EntryInterchange: ENTRY_POINTS.find(point => point?.value === props?.route?.params?.tripStatupPointData?.entryInterchange)?.label,
+            TripStatus: 'Completed',
+            ExitDateTime: selectedDate,
+            ExitInterchange: ENTRY_POINTS.find(point => point?.value === value)?.label,
+            TotalCostTrip: totalToll?.totalCost,
+        };
 
-        //     try {
-        //         await axios.post('https://crudcrud.com/api/0de6f86092554f1a984f644dc24fb0f5/trips', data);
-        //         Alert.alert('Success', 'Trip data submitted successfully.');
-        //     } catch (error) {
-        //         Alert.alert('Error', 'Failed to submit trip data.');
-        //         console.error(error);
-        //     }
+        try {
+            setLoading(true)
+            const response = await axios.post('https://crudcrud.com/api/0de6f86092554f1a984f644dc24fb0f5/trips', payload);
+            Alert.alert('Success', 'Trip data submitted successfully.');
+        } catch (error) {
+            console.error(error?.response?.data);
+        } finally {
+            setLoading(false)
+            props.navigation.navigate("TripSummaryScreen", { summary: totalToll })
+        }
     }
     return (
         <Container hasScroll insetsToHandle={['top', 'right', 'left']} screenBackgroundStyle={{ backgroundColor: Colors.background, }} containerStyles={{ backgroundColor: Colors.white, paddingHorizontal: 0 }} >
