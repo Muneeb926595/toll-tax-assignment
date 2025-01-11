@@ -23,6 +23,21 @@ export const Layout = {
   },
 
   /**
+   * Incremental sizes
+   * used for margin, padding
+   */
+  zero: 0,
+  tiny: 2,
+  micro: 5,
+  mini: 10,
+  small: 15,
+  medium: 20,
+  large: 25,
+  xlarge: 27,
+  xxlarge: 40,
+  xxxlarge: 80,
+
+  /**
    * Dimensional sizes in percentage
    */
   zeroWidth: '0%',
