@@ -12,6 +12,8 @@ class _Constants {
     extraLong: 6000,
   };
 
+  readonly REGEX_NUMBER_PLATE = /^[A-Z]{3}-\d{3}$/;
+
   readonly DATE_MONTH_YEAR_FORMATE_DASHED = 'DD-MM-YYYY';
   readonly DATE_MONTH_YEAR_FORMATE_SLASHED = 'DD/MM/YYYY';
 

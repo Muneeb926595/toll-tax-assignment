@@ -1,6 +1,5 @@
 import {TextStyle, ViewStyle} from 'react-native';
 import {StyleProp} from 'react-native/types';
-import {AppIconName, AppIconSize} from '../icon/types';
 
 export type Props = {
   onPress: () => void;
