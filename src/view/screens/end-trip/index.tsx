@@ -9,12 +9,12 @@ import { styles } from './styles'
 import { AppText, AuthInput, Button, Container, DatePickerBottomSheet } from '../../components';
 import { CommonBottomSheetStyle } from '../../components/bottom-sheet-wrapper/styles';
 import { Colors, Constants, ENTRY_POINTS, Images, Layout } from '../../../globals';
-import { calculateToll } from './metods';
+import { calculateToll } from './methods';
 
 export const EndTripScreen = (props) => {
     const [loading, setLoading] = useState(false);
 
-    const [selectedDate, setSelectedDate] = useState(undefined)
+    const [selectedDate, setSelectedDate] = useState(new Date())
 
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(ENTRY_POINTS?.[0]?.value);
@@ -25,30 +25,6 @@ export const EndTripScreen = (props) => {
             numberPlate: props?.route?.params?.tripStatupPointData?.numberPlate,
         }
     });
-
-    // const handleSubmit = async () => {
-    //     const totalCost = calculateToll();
-
-    //     if (!totalCost) return;
-
-    //     const data = {
-    //         EntryDateTime: entryDate,
-    //         NumberPlate: numberPlate,
-    //         EntryInterchange: ENTRY_POINTS.find(point => point.value === entryPoint)?.label,
-    //         TripStatus: 'Completed',
-    //         ExitDateTime: exitDate,
-    //         ExitInterchange: ENTRY_POINTS.find(point => point.value === exitPoint)?.label,
-    //         TotalCostTrip: totalCost,
-    //     };
-
-    //     try {
-    //         await axios.post('https://crudcrud.com/api/0de6f86092554f1a984f644dc24fb0f5/trips', data);
-    //         Alert.alert('Success', 'Trip data submitted successfully.');
-    //     } catch (error) {
-    //         Alert.alert('Error', 'Failed to submit trip data.');
-    //         console.error(error);
-    //     }
-    // };
 
     const handleOpenCalender = async () => {
         await magicSheet.show(() => <DatePickerBottomSheet
@@ -64,13 +40,32 @@ export const EndTripScreen = (props) => {
         const tripStartData = props?.route?.params?.tripStatupPointData
         const tripEndData = {
             ...data,
-            entryDateTime: selectedDate,
-            entryInterchange: value,
+            exitDateTime: selectedDate,
+            exitInterchange: value,
         }
 
         const totalToll = calculateToll(tripStartData, tripEndData);
 
         console.log("totalToll", totalToll)
+        //     if (!totalCost) return;
+
+        //     const data = {
+        //         EntryDateTime: entryDate,
+        //         NumberPlate: numberPlate,
+        //         EntryInterchange: ENTRY_POINTS.find(point => point.value === entryPoint)?.label,
+        //         TripStatus: 'Completed',
+        //         ExitDateTime: exitDate,
+        //         ExitInterchange: ENTRY_POINTS.find(point => point.value === exitPoint)?.label,
+        //         TotalCostTrip: totalCost,
+        //     };
+
+        //     try {
+        //         await axios.post('https://crudcrud.com/api/0de6f86092554f1a984f644dc24fb0f5/trips', data);
+        //         Alert.alert('Success', 'Trip data submitted successfully.');
+        //     } catch (error) {
+        //         Alert.alert('Error', 'Failed to submit trip data.');
+        //         console.error(error);
+        //     }
     }
     return (
         <Container hasScroll insetsToHandle={['top', 'right', 'left']} screenBackgroundStyle={{ backgroundColor: Colors.background, }} containerStyles={{ backgroundColor: Colors.white, paddingHorizontal: 0 }} >
@@ -130,6 +125,7 @@ export const EndTripScreen = (props) => {
                     <Button
                         buttonLable={"Calculate"}
                         loading={loading}
+                        disabled={loading}
                         onPress={handleSubmit(handleCalculate)}
                         buttonContainer={{ backgroundColor: Colors.black, marginTop: Layout.heightPercentageToDP(3) }}
                         btnLabelStyles={{ color: Colors.white }}

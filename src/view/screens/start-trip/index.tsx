@@ -11,7 +11,7 @@ import { CommonBottomSheetStyle } from '../../components/bottom-sheet-wrapper/st
 import { Colors, Constants, ENTRY_POINTS, Images, Layout } from '../../../globals';
 
 export const StartTripScreen = (props) => {
-    const [selectedDate, setSelectedDate] = useState(undefined)
+    const [selectedDate, setSelectedDate] = useState(new Date())
 
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(ENTRY_POINTS?.[0]?.value);
@@ -39,6 +39,7 @@ export const StartTripScreen = (props) => {
             entryDateTime: selectedDate,
             entryInterchange: value,
         }
+
         props.navigation.navigate('EndTripScreen', { tripStatupPointData: payload })
     }
     return (
