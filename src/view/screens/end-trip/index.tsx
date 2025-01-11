@@ -1,36 +1,16 @@
-import { Text, TextInput, Alert, SafeAreaView, TouchableOpacity, Platform, View, Image } from 'react-native'
 import React, { useState } from 'react'
+import { magicSheet } from 'react-native-magic-sheet';
+import DropDownPicker from 'react-native-dropdown-picker'
+import { TouchableOpacity, Platform, View, Image } from 'react-native'
+import { Controller, useForm } from 'react-hook-form';
+import dayjs from 'dayjs';
+
 import { styles } from './styles'
 import { AppText, AuthInput, Button, Container, DatePickerBottomSheet } from '../../components';
-import { magicSheet } from 'react-native-magic-sheet';
-import axios from 'axios';
-import DropDownPicker from 'react-native-dropdown-picker'
 import { CommonBottomSheetStyle } from '../../components/bottom-sheet-wrapper/styles';
-import { Colors, Constants, Images, Layout } from '../../../globals';
-import { getSelectedDateRangeLabelFromSelectedDates } from '../../../utils/timeDateUtils';
-import { Controller, useForm } from 'react-hook-form';
+import { Colors, Constants, ENTRY_POINTS, Images, Layout } from '../../../globals';
 
-// Constants
-const ENTRY_POINTS = [
-    { label: 'Zero Point', value: 0 },
-    { label: 'NS Interchange', value: 5 },
-    { label: 'Ph4 Interchange', value: 10 },
-    { label: 'Ferozpur Interchange', value: 17 },
-    { label: 'Lake City Interchange', value: 24 },
-    { label: 'Raiwand Interchange', value: 29 },
-    { label: 'Bahria Interchange', value: 34 },
-];
-
-const WEEKEND_MULTIPLIER = 1.5;
-const BASE_RATE = 20;
-const PER_KM_RATE = 0.2;
-const DISCOUNT_DAYS = {
-    even: ['Mon', 'Wed'],
-    odd: ['Tue', 'Thu'],
-};
-const HOLIDAY_DATES = ['03-23', '08-14', '12-25']; // MM-DD format
-
-export const TollCalculatorScreen = () => {
+export const EndTripScreen = (props) => {
     const [loading, setLoadgin] = useState(false);
 
     const [entryDate, setEntryDate] = useState('');
@@ -44,10 +24,9 @@ export const TollCalculatorScreen = () => {
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             numberPlate: '',
-            password: '',
         }
     });
-
+    console.log("props", props?.route?.params)
     // const handleSubmit = async () => {
     //     const totalCost = calculateToll();
 
@@ -82,7 +61,8 @@ export const TollCalculatorScreen = () => {
         />, { ...CommonBottomSheetStyle, snapPoints: [Layout.heightPercentageToDP(56)] })
     }
 
-    const handleSubmitTrip = (data) => {
+    const handleCalculate = (data) => {
+        console.log("data", data)
 
     }
     return (
@@ -135,14 +115,14 @@ export const TollCalculatorScreen = () => {
 
                     <TouchableOpacity style={[styles.datePickerContainer]} onPress={handleOpenCalender}>
                         <AppText style={{ color: selectedDates ? Colors.surface['DEFAULT'] : Colors.typography['100'], fontSize: Layout.RFValue(Platform.select({ ios: 13.4, android: 16 })) }}>
-                            {getSelectedDateRangeLabelFromSelectedDates(selectedDates) ?? "Date Time"}
+                            {dayjs(selectedDates).format(Constants.DATE_AND_TIME_FORMATE) ?? "Date Time"}
                         </AppText>
                     </TouchableOpacity>
 
                     <Button
-                        buttonLable={"Submit Trip"}
+                        buttonLable={"Calculate"}
                         loading={loading}
-                        onPress={handleSubmit(handleSubmitTrip)}
+                        onPress={handleSubmit(handleCalculate)}
                         buttonContainer={{ backgroundColor: Colors.black, marginTop: Layout.heightPercentageToDP(3) }}
                         btnLabelStyles={{ color: Colors.white }}
                     />

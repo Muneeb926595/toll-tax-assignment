@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {Colors, Constants, Layout} from '../../../globals';
 
 export const styles = StyleSheet.create({
@@ -25,10 +25,15 @@ export const styles = StyleSheet.create({
     borderRadius: Layout.widthPercentageToDP(1),
     color: Colors.surface['DEFAULT'],
     backgroundColor: Colors.background,
-    paddingVertical: Layout.heightPercentageToDP(1.2),
+    paddingVertical: Layout.heightPercentageToDP(
+      Platform.select({ios: Layout.small, android: Layout.mini}) /
+        Layout.divisionFactorForHeight,
+    ),
     borderColor: Colors.surface['DEFAULT'],
     borderWidth: 1,
-    paddingHorizontal: Layout.widthPercentageToDP(4),
+    paddingHorizontal: Layout.widthPercentageToDP(
+      Layout.medium / Layout.divisionFactorForWidth,
+    ),
   },
   error: {
     color: Colors.red,

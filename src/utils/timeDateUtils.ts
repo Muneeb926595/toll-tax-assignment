@@ -95,30 +95,6 @@ export const getMonthFromTimestampDate = (timestamp: number): string => {
   return monthAndYear;
 };
 
-export const getSelectedDateRangeLabelFromSelectedDates = selectedDates => {
-  if (selectedDates) {
-    const markedDates = Object.keys(selectedDates);
-
-    // Parse the dates using dayjs
-    if (markedDates?.length === 1) {
-      const singleDate = dayjs(markedDates?.[0]);
-      const formattedSingleDate = `${singleDate?.format(
-        'DD',
-      )} ${singleDate?.format('MMMM')} ${singleDate?.format('YYYY')}`;
-      return formattedSingleDate;
-    } else {
-      const minDate = dayjs(markedDates?.[0]);
-      const maxDate = dayjs(markedDates?.[markedDates?.length - 1]);
-      const formattedDateRange = `${minDate?.format('DD')} - ${maxDate?.format(
-        'DD',
-      )} ${minDate?.format('MMMM')}, ${minDate.format('YYYY')}`;
-      return formattedDateRange;
-    }
-  } else {
-    return null;
-  }
-};
-
 // to convert backend date object into frontend calendar object
 export const convertDateStringToObj = dateString => {
   if (dateString) {

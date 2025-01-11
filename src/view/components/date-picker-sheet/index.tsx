@@ -25,13 +25,13 @@ export const DatePickerBottomSheet = ({ setSelectedDates, headerTitle, }: Props)
     }
 
     const handleDone = () => {
-        setSelectedDates(convertDateStringToObj(value))
+        setSelectedDates(value)
     }
     return (
         <BottomSheetWrapper headerTitle={headerTitle ?? ""}>
             <View style={{ backgroundColor: Colors.white, flex: 1, borderTopLeftRadius: Layout.widthPercentageToDP(4), borderTopRightRadius: Layout.widthPercentageToDP(4), paddingVertical: Layout.widthPercentageToDP(4) }}>
                 <DatePicker
-                    mode="date"
+                    mode="datetime"
                     date={value ?? getDefaultDOB()}
                     onDateChange={doDateChange}
                     style={{ width: Dimensions.get('screen').width }}
