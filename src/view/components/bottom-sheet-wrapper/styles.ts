@@ -4,7 +4,7 @@ import {Colors, Layout} from '../../../globals';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.surface['DEFAULT'],
+    backgroundColor: Colors.brand['DEFAULT'],
     borderTopLeftRadius: Layout.widthPercentageToDP(5),
     borderTopRightRadius: Layout.widthPercentageToDP(5),
   },

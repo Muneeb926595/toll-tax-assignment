@@ -37,6 +37,10 @@ export const TollCalculatorScreen = () => {
     const [exitDate, setExitDate] = useState('');
     const [selectedDates, setSelectedDates] = useState(undefined)
 
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(ENTRY_POINTS?.[0]?.value);
+    const [items, setItems] = useState(ENTRY_POINTS);
+
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             numberPlate: '',
@@ -74,7 +78,7 @@ export const TollCalculatorScreen = () => {
                 setSelectedDates(values);
                 magicSheet?.hide()
             }}
-            headerTitle={"selectDateOfBirth"}
+            headerTitle={"Select Date"}
         />, { ...CommonBottomSheetStyle, snapPoints: [Layout.heightPercentageToDP(56)] })
     }
 
@@ -89,6 +93,23 @@ export const TollCalculatorScreen = () => {
                         source={Images.Logo}
                         resizeMode='cover'
                         style={styles.logo}
+                    />
+
+                    <DropDownPicker
+                        open={open}
+                        value={value}
+                        items={items}
+                        setOpen={setOpen}
+                        setValue={setValue}
+                        setItems={setItems}
+                        multiple={false}
+                        searchable={true}
+                        searchPlaceholder={"Search"}
+                        mode="BADGE"
+                        maxHeight={Layout.heightPercentageToDP(42)}
+                        placeholder={"Select Interchange"}
+                        dropDownContainerStyle={{ borderWidth: 0, borderTopWidth: 1 }}
+                        selectedItemContainerStyle={{ backgroundColor: Colors.surface['400'] }}
                     />
 
                     <Controller
@@ -112,48 +133,17 @@ export const TollCalculatorScreen = () => {
                         Number plate is invalid please enter in following pattern ABC-343
                     </AppText>}
 
-
-                    <Text style={styles.label}>Entry Point:</Text>
-                    {/* <Picker selectedValue={entryPoint} onValueChange={setEntryPoint}>
-        {ENTRY_POINTS.map(point => (
-          <Picker.Item key={point.value} label={point.label} value={point.value} />
-        ))}
-      </Picker>
-
-      <Text style={styles.label}>Exit Point:</Text>
-      <Picker selectedValue={exitPoint} onValueChange={setExitPoint}>
-        {ENTRY_POINTS.map(point => (
-          <Picker.Item key={point.value} label={point.label} value={point.value} />
-        ))}
-      </Picker> */}
-
-                    <Text style={styles.label}>Entry Date (YYYY-MM-DD):</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={entryDate}
-                        onChangeText={setEntryDate}
-                        placeholder="2024-01-01"
-                    />
-
                     <TouchableOpacity style={[styles.datePickerContainer]} onPress={handleOpenCalender}>
                         <AppText style={{ color: selectedDates ? Colors.surface['DEFAULT'] : Colors.typography['100'], fontSize: Layout.RFValue(Platform.select({ ios: 13.4, android: 16 })) }}>
-                            {getSelectedDateRangeLabelFromSelectedDates(selectedDates) ?? "dateOfBirthWithSterek"}
+                            {getSelectedDateRangeLabelFromSelectedDates(selectedDates) ?? "Date Time"}
                         </AppText>
                     </TouchableOpacity>
-
-                    <Text style={styles.label}>Exit Date (YYYY-MM-DD):</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={exitDate}
-                        onChangeText={setExitDate}
-                        placeholder="2024-01-01"
-                    />
 
                     <Button
                         buttonLable={"Submit Trip"}
                         loading={loading}
                         onPress={handleSubmit(handleSubmitTrip)}
-                        buttonContainer={{ backgroundColor: Colors.black, marginTop: -Layout.heightPercentageToDP(1) }}
+                        buttonContainer={{ backgroundColor: Colors.black, marginTop: Layout.heightPercentageToDP(3) }}
                         btnLabelStyles={{ color: Colors.white }}
                     />
                 </View>

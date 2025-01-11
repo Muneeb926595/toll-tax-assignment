@@ -15,6 +15,7 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { TollCalculatorScreen } from './view/screens';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { MagicSheetPortal } from 'react-native-magic-sheet';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -31,6 +32,7 @@ function App(): React.JSX.Element {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
+        <MagicSheetPortal />
         <NavigationContainer  >
           {/* @ts-ignore */}
           <MainAppStack.Navigator >

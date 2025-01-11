@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     marginTop: Layout.heightPercentageToDP(1),
     width: '100%',
     backgroundColor: Colors.surface[100],
-    paddingVertical: Layout.heightPercentageToDP(1),
+    paddingVertical: Layout.heightPercentageToDP(2),
     borderRadius: Layout.widthPercentageToDP(1),
     alignContent: 'center',
     justifyContent: 'center',

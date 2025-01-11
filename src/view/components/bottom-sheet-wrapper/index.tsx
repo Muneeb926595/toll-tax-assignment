@@ -20,14 +20,14 @@ export const BottomSheetWrapper = ({ children, headerTitle, }: Props) => {
     return (
         <View style={styles.container}>
             <View style={styles.wrapper}>
-                <TouchableOpacity onPress={handleCloseBottomSheet}>
+                <TouchableOpacity onPress={handleCloseBottomSheet} style={styles.backIcon}>
                     <SvgXml
                         xml={backArrowIcon}
                         width={24}
                         height={20}
-                        color={Colors.black}
-                        fill={Colors.black}
-                        stroke={Colors.black}
+                        color={Colors.white}
+                        fill={Colors.white}
+                        stroke={Colors.white}
                     />
                 </TouchableOpacity>
                 <AppText style={styles.heading}>

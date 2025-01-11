@@ -29,7 +29,6 @@ export const styles = StyleSheet.create({
     borderColor: Colors.surface['DEFAULT'],
     borderWidth: 1,
     paddingHorizontal: Layout.widthPercentageToDP(4),
-    marginVertical: Layout.heightPercentageToDP(1),
   },
   error: {
     color: Colors.red,
